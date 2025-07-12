@@ -12,7 +12,7 @@ RELAY_PASSWORD=$(jq -r .relay_password "$CONFIG_PATH")
 MOUNT_NAME=$(jq -r .mount_name "$CONFIG_PATH")
 SERVER_NAME=$(jq -r .server_name "$CONFIG_PATH")
 
-# Render icecast config with Jinja2
+# Render Icecast config using Jinja2
 python3 - <<EOF
 import json
 from jinja2 import Template
@@ -27,5 +27,5 @@ with open("$ICECAST_CONFIG", "w") as f:
     f.write(tmpl.render(cfg))
 EOF
 
-# Run Icecast
-icecast -c "$ICECAST_CONFIG"
+# Run Icecast with rendered config
+exec icecast -c "$ICECAST_CONFIG"
