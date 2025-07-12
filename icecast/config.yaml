@@ -10,7 +10,6 @@ host_network: true
 ingress: false
 panel_icon: mdi:radio
 panel_title: "Icecast"
-watchdog: http://localhost:8000
 log_level: info
 
 arch:
