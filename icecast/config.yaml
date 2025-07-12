@@ -1,15 +1,26 @@
 name: "Icecast Server"
 version: "1.0.0"
 slug: "icecast"
-description: "Self-host your own Icecast streaming server"
+description: "Self-host your own Icecast streaming server inside Home Assistant"
 startup: services
 boot: auto
+hassio_api: false
+homeassistant_api: false
+host_network: true
+ingress: false
+panel_icon: mdi:radio
+panel_title: "Icecast"
+watchdog: http://localhost:8000
+log_level: info
+
 arch:
   - amd64
   - aarch64
   - armv7
+
 ports:
   8000/tcp: 8000
+
 options:
   hostname: "localhost"
   port: 8000
@@ -18,6 +29,7 @@ options:
   relay_password: "relay"
   mount_name: "stream"
   server_name: "My Icecast Radio"
+
 schema:
   hostname: str
   port: int
