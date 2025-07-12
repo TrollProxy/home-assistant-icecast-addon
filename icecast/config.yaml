@@ -1,0 +1,28 @@
+name: "Icecast Server"
+version: "1.0.0"
+slug: "icecast"
+description: "Self-host your own Icecast streaming server"
+startup: services
+boot: auto
+arch:
+  - amd64
+  - aarch64
+  - armv7
+ports:
+  8000/tcp: 8000
+options:
+  hostname: "localhost"
+  port: 8000
+  source_password: "hackme"
+  admin_password: "admin"
+  relay_password: "relay"
+  mount_name: "stream"
+  server_name: "My Icecast Radio"
+schema:
+  hostname: str
+  port: int
+  source_password: str
+  admin_password: str
+  relay_password: str
+  mount_name: str
+  server_name: str
