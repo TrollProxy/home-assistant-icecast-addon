@@ -3,17 +3,17 @@ FROM alpine:3.20
 # Add icecast user/group
 RUN addgroup -S icecast && adduser -S icecast -G icecast
 
-# Install Icecast, jq, Python, mime types
+# Install Icecast, Python, Jinja2, and MIME support
 RUN apk add --no-cache \
     icecast \
     jq \
-    mime-types \
+    mailcap \
     python3 \
     py3-pip \
  && pip install --break-system-packages Jinja2 \
  && mkdir -p /etc/icecast2 /var/log/icecast2 /data
 
-# Copy scripts and config template
+# Copy entrypoint and template
 COPY run.sh /run.sh
 COPY icecast.xml.j2 /icecast.xml.j2
 
