@@ -1,27 +1,13 @@
-FROM alpine:3.20
+FROM moul/icecast
 
-# Add icecast user/group
-RUN addgroup -S icecast && adduser -S icecast -G icecast
+# Install jq to parse JSON configuration
+RUN apt-get update && apt-get install -y jq
 
-# Install Icecast, Python, Jinja2, and MIME support
-RUN apk add --no-cache \
-    icecast \
-    jq \
-    mailcap \
-    python3 \
-    py3-pip \
- && pip install --break-system-packages Jinja2 \
- && mkdir -p /etc/icecast2 /var/log/icecast2 /data
-
-# Copy entrypoint and template
+# Copy the run script
 COPY run.sh /run.sh
-COPY icecast.xml.j2 /icecast.xml.j2
 
-# Permissions
-RUN chmod +x /run.sh \
- && chown -R icecast:icecast /etc/icecast2 /var/log/icecast2 /data /run.sh /icecast.xml.j2
+# Make the run script executable
+RUN chmod +x /run.sh
 
-# Switch to non-root user
-USER icecast
-
-CMD ["/run.sh"]
+# Set the entrypoint to our custom script
+ENTRYPOINT ["/run.sh"]
