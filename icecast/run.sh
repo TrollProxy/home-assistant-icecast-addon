@@ -1,31 +1,18 @@
-#!/bin/sh
+#!/bin/bash
 
-CONFIG_PATH=/data/options.json
-ICECAST_CONFIG=/etc/icecast2/icecast.xml
+# Read user-configured options from /data/options.json
+SOURCE_PASSWORD=$(jq -r '.source_password' /data/options.json)
+ADMIN_PASSWORD=$(jq -r '.admin_password' /data/options.json)
+RELAY_PASSWORD=$(jq -r '.relay_password' /data/options.json)
+MAX_CLIENTS=$(jq -r '.max_clients' /data/options.json)
+PORT=$(jq -r '.port' /data/options.json)
 
-# Read config values
-HOSTNAME=$(jq -r .hostname "$CONFIG_PATH")
-PORT=$(jq -r .port "$CONFIG_PATH")
-SOURCE_PASSWORD=$(jq -r .source_password "$CONFIG_PATH")
-ADMIN_PASSWORD=$(jq -r .admin_password "$CONFIG_PATH")
-RELAY_PASSWORD=$(jq -r .relay_password "$CONFIG_PATH")
-MOUNT_NAME=$(jq -r .mount_name "$CONFIG_PATH")
-SERVER_NAME=$(jq -r .server_name "$CONFIG_PATH")
+# Set environment variables for Icecast configuration
+export ICECAST_SOURCE_PASSWORD=$SOURCE_PASSWORD
+export ICECAST_ADMIN_PASSWORD=$ADMIN_PASSWORD
+export ICECAST_RELAY_PASSWORD=$RELAY_PASSWORD
+export ICECAST_MAX_CLIENTS=$MAX_CLIENTS
+export ICECAST_PORT=$PORT
 
-# Render Icecast config using Jinja2
-python3 - <<EOF
-import json
-from jinja2 import Template
-
-with open("$CONFIG_PATH") as f:
-    cfg = json.load(f)
-
-with open("/icecast.xml.j2") as f:
-    tmpl = Template(f.read())
-
-with open("$ICECAST_CONFIG", "w") as f:
-    f.write(tmpl.render(cfg))
-EOF
-
-# Run Icecast with rendered config
-exec icecast -c "$ICECAST_CONFIG"
+# Execute the original Icecast entrypoint to start the server
+exec /entrypoint.sh
