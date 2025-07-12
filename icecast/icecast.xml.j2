@@ -32,17 +32,25 @@
   <fileserve>1</fileserve>
 
   <paths>
-    <basedir>/usr/share/icecast
-    </basedir>
+    <basedir>/usr/share/icecast</basedir>
     <logdir>/var/log/icecast2</logdir>
     <webroot>/usr/share/icecast/web</webroot>
     <adminroot>/usr/share/icecast/admin</adminroot>
     <alias source="/" destination="/status.xsl"/>
+    <mime-types>/etc/mime.types</mime-types>
   </paths>
 
   <logging>
     <accesslog>access.log</accesslog>
     <errorlog>error.log</errorlog>
     <loglevel>3</loglevel>
+    <logsize>10000</logsize>
+    <logarchive>1</logarchive>
   </logging>
+
+  <changeowner>
+    <user>icecast</user>
+    <group>icecast</group>
+  </changeowner>
+
 </icecast>
