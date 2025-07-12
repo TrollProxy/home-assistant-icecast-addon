@@ -18,22 +18,20 @@ arch:
   - armv7
 
 ports:
-  8000/tcp: 8000
+  "{{ options.port }}/tcp": "{{ options.port }}"
+ports_description:
+  "{{ options.port }}/tcp": "Icecast server port for streaming and administration"
 
 options:
-  hostname: "localhost"
-  port: 8000
   source_password: "hackme"
-  admin_password: "admin"
-  relay_password: "relay"
-  mount_name: "stream"
-  server_name: "My Icecast Radio"
+  admin_password: "adminhack"
+  relay_password: "relayhack"
+  max_clients: 100
+  port: 8000
 
 schema:
-  hostname: str
+  source_password: password
+  admin_password: password
+  relay_password: password
+  max_clients: int
   port: int
-  source_password: str
-  admin_password: str
-  relay_password: str
-  mount_name: str
-  server_name: str
